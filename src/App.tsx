@@ -7,7 +7,7 @@ import Footer from "./layout/Footer";
 import Home from "./pages/Home";
 import ParentsPage from "./pages/AuthorPage";
 import ChildrenPage from "./pages/BooksPage";
-import AboutPage from "./pages/AboutPage";   // <-- REAL about page
+import AboutPage from "./pages/AboutPage";  
 
 import "./App.css";
 
@@ -49,13 +49,13 @@ function App() {
 
         <main className="main-content">
           <Routes>
-            {/* Home Page */}
+           
             <Route path="/" element={<Home />} />
 
-            {/* Authors Page */}
+            
             <Route path="/parents" element={<ParentsPage />} />
 
-            {/* Books Page */}
+            
             <Route
               path="/children"
               element={
@@ -67,7 +67,7 @@ function App() {
               }
             />
 
-            {/* About Page */}
+            
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>

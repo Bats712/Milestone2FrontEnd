@@ -47,7 +47,7 @@ export default function ParentsPage() {
   return (
     <div className="card">
 
-      {/* Header + Search + Add */}
+     
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Authors</h2>
 
@@ -71,7 +71,7 @@ export default function ParentsPage() {
         </div>
       </div>
 
-      {/* TABLE */}
+      
       <table className="w-full">
         <thead className="bg-gray-100">
           <tr>
@@ -123,7 +123,7 @@ export default function ParentsPage() {
         </tbody>
       </table>
 
-      {/* Pagination */}
+   
       <Pagination
         page={page}
         totalPages={totalPages}
@@ -131,7 +131,6 @@ export default function ParentsPage() {
         onNext={() => setPage(page + 1)}
       />
 
-      {/* Modal */}
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}

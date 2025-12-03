@@ -1,33 +1,25 @@
-import React, { useState, useEffect, useMemo } from "react";
-import api from "../services/api";
-import ChildForm from "../components/ChildForm";
+import { useState, useMemo } from "react";
 import Modal from "../components/Modal";
+import ChildForm from "../components/ChildForm";
 import type { Book } from "../types/Book";
+import api from "../services/api";
+
+interface ChildrenPageProps {
+  books: Book[];
+  loading: boolean;
+  error: string | null;
+}
 
 const pageSize = 5;
 
-const ChildrenPage: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [q, setQ] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
-  const [show, setShow] = useState<boolean>(false);
+const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) => {
+  const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
+
+  const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Book | null>(null);
 
-  const load = async () => {
-    setLoading(true);
-    try {
-      const data = await api.getAllBooks();
-      setBooks(data as Book[]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
-
+  // Filter books by search
   const filtered = useMemo(() => {
     const s = q.toLowerCase();
     return books.filter(
@@ -40,15 +32,21 @@ const ChildrenPage: React.FC = () => {
   const totalPages = Math.ceil(filtered.length / pageSize);
   const pageItems = filtered.slice((page - 1) * pageSize, page * pageSize);
 
+  // Delete
   const del = async (b: Book) => {
     if (!confirm("Delete book?")) return;
     await api.deleteBook(b.bookID);
-    load();
+    window.location.reload(); 
   };
+
+  if (loading) return <p>Loading books...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div className="card">
-      <div className="flex justify-between mb-3">
+
+      
+      <div className="flex justify-between mb-4">
         <h2 className="text-xl font-bold">Books</h2>
 
         <div className="flex gap-2">
@@ -62,12 +60,11 @@ const ChildrenPage: React.FC = () => {
             className="border px-3 py-2 rounded"
           />
 
-          {/* Add button (same style idea as AuthorsPage) */}
           <button
             className="btn btn-primary"
             onClick={() => {
               setEditing(null);
-              setShow(true);
+              setShowModal(true);
             }}
           >
             + Add
@@ -75,6 +72,7 @@ const ChildrenPage: React.FC = () => {
         </div>
       </div>
 
+    
       <table className="w-full">
         <thead className="bg-gray-100">
           <tr>
@@ -87,46 +85,38 @@ const ChildrenPage: React.FC = () => {
         </thead>
 
         <tbody>
-          {loading && (
-            <tr>
-              <td colSpan={5}>Loading...</td>
+          {pageItems.map((b) => (
+            <tr key={b.bookID}>
+              <td className="border px-3 py-2">{b.bookID}</td>
+              <td className="border px-3 py-2">{b.bookTitle}</td>
+              <td className="border px-3 py-2">{b.bookAuthor}</td>
+              <td className="border px-3 py-2">{b.releaseYear}</td>
+
+              <td className="border px-3 py-2 text-right">
+                <button
+                  className="btn btn-secondary mr-2"
+                  onClick={() => {
+                    setEditing(b);
+                    setShowModal(true);
+                  }}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn btn-danger"
+                  onClick={() => del(b)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          )}
-
-          {!loading &&
-            pageItems.map((b) => (
-              <tr key={b.bookID}>
-                <td className="border px-3 py-2">{b.bookID}</td>
-                <td className="border px-3 py-2">{b.bookTitle}</td>
-                <td className="border px-3 py-2">{b.bookAuthor}</td>
-                <td className="border px-3 py-2">{b.releaseYear}</td>
-                <td className="border px-3 py-2 text-right">
-                  {/* Edit button */}
-                  <button
-                    className="btn btn-secondary mr-2"
-                    onClick={() => {
-                      setEditing(b);
-                      setShow(true);
-                    }}
-                  >
-                    Edit
-                  </button>
-
-                  {/* Delete button */}
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => del(b)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+          ))}
         </tbody>
       </table>
 
-      {/* Pagination */}
-      <div className="pagination">
+      
+      <div className="pagination mt-3">
         <button
           className="btn btn-secondary"
           disabled={page <= 1}
@@ -135,7 +125,7 @@ const ChildrenPage: React.FC = () => {
           Prev
         </button>
 
-        <span>
+        <span className="px-3">
           Page {page} of {totalPages}
         </span>
 
@@ -148,20 +138,20 @@ const ChildrenPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Modal for Add/Edit */}
+      
       <Modal
-        open={show}
+        open={showModal}
+        onClose={() => setShowModal(false)}
         title={editing ? "Edit Book" : "Add Book"}
-        onClose={() => setShow(false)}
       >
         <ChildForm
           initial={editing}
           onSaved={() => {
-            setShow(false);
+            setShowModal(false);
             setEditing(null);
-            load();
+            window.location.reload();
           }}
-          onCancel={() => setShow(false)}
+          onCancel={() => setShowModal(false)}
         />
       </Modal>
     </div>
