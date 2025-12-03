@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import Modal from "../components/Modal";
+import Modal from "../components/modal";
 import ChildForm from "../components/ChildForm";
 import type { Book } from "../types/Book";
 import api from "../services/api";
+
 
 interface ChildrenPageProps {
   books: Book[];
@@ -19,7 +20,6 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Book | null>(null);
 
-  // Filter books by search
   const filtered = useMemo(() => {
     const s = q.toLowerCase();
     return books.filter(
@@ -32,11 +32,10 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
   const totalPages = Math.ceil(filtered.length / pageSize);
   const pageItems = filtered.slice((page - 1) * pageSize, page * pageSize);
 
-  // Delete
   const del = async (b: Book) => {
     if (!confirm("Delete book?")) return;
     await api.deleteBook(b.bookID);
-    window.location.reload(); 
+    window.location.reload();
   };
 
   if (loading) return <p>Loading books...</p>;
@@ -45,7 +44,6 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
   return (
     <div className="card">
 
-      
       <div className="flex justify-between mb-4">
         <h2 className="text-xl font-bold">Books</h2>
 
@@ -72,7 +70,6 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
         </div>
       </div>
 
-    
       <table className="w-full">
         <thead className="bg-gray-100">
           <tr>
@@ -115,7 +112,6 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
         </tbody>
       </table>
 
-      
       <div className="pagination mt-3">
         <button
           className="btn btn-secondary"
@@ -138,7 +134,7 @@ const ChildrenPage: React.FC<ChildrenPageProps> = ({ books, loading, error }) =>
         </button>
       </div>
 
-      
+   
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}

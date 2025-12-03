@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
-import ChildForm from "../components/ChildForm";
-import Modal from "../components/Modal";
+import ChildForm from "../components/childform";
+import Modal from "../components/modal";
 
 
 export default function ParentDetails() {
