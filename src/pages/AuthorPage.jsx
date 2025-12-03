@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import api from "../services/api";
-import ParentForm from "../components/parentform";
+import ParentForm from "../components/ParentForm";
 import Modal from "../components/Modal";
-import Pagination from "../components/pagination";
+import Pagination from "../components/Pagination";
 
 export default function ParentsPage() {
   const [authors, setAuthors] = useState([]);
