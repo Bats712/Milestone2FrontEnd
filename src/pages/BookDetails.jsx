@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
-import ChildForm from "../components/ChildForm";
-import Modal from "../components/Modal";
-import Pagination from "../components/Pagination";
+import ChildForm from "../components/ChildForm.tsx";
+import Modal from "../components/Modal.tsx";
+import Pagination from "../components/pagination.jsx";
 
 
 export default function ParentDetails() {
