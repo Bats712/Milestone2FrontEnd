@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import api from "../services/api";
 import ParentForm from "../components/parentform";
-import Modal from "../components/modal";
+import Modal from "../components/Modal";
 import Pagination from "../components/pagination";
 
 export default function ParentsPage() {
