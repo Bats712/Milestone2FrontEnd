@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import api from "../services/api";
 import ChildForm from "../components/ChildForm";
 import Modal from "../components/Modal";
+import Pagination from "../components/Pagination";
 
 
 export default function ParentDetails() {
