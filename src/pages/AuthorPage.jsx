@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import api from "../services/api";
-import ParentForm from "../components/parentform.tsx";
+import ParentForm from "../components/ParentForm.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/pagination.jsx";
 
