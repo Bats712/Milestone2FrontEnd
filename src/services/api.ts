@@ -1,8 +1,16 @@
 import type { Author } from "../types/Author";
 import type { Book } from "../types/Book";
 
-const API_BASE = "https://milestonelibraryapplication-1.onrender.com/";
+// Auto-detect environment
+const isLocal =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
 
+// Base URLs
+const LOCAL_API_BASE = "http://localhost:8080/";
+const ONLINE_API_BASE = "https://milestonelibraryapplication-1.onrender.com/";
+
+const API_BASE = isLocal ? LOCAL_API_BASE : ONLINE_API_BASE;
 
 async function handleRes<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -14,6 +22,7 @@ async function handleRes<T>(res: Response): Promise<T> {
   return res.json();
 }
 
+// ---------- AUTHORS ----------
 export async function getAllAuthors(): Promise<Author[]> {
   return handleRes(await fetch(`${API_BASE}authors`));
 }
@@ -49,7 +58,7 @@ export async function deleteAuthor(id: number): Promise<void> {
   return handleRes(await fetch(`${API_BASE}authors/${id}`, { method: "DELETE" }));
 }
 
-
+// ---------- BOOKS ----------
 export async function getAllBooks(): Promise<Book[]> {
   return handleRes(await fetch(`${API_BASE}books`));
 }
