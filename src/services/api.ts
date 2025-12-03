@@ -1,7 +1,7 @@
 import type { Author } from "../types/Author";
 import type { Book } from "../types/Book";
 
-const API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = "https://milestonelibraryapplication-1.onrender.com/";
 
 
 async function handleRes<T>(res: Response): Promise<T> {
@@ -11,11 +11,8 @@ async function handleRes<T>(res: Response): Promise<T> {
   }
 
   if (res.status === 204) return null as T;
-
   return res.json();
 }
-
-
 
 export async function getAllAuthors(): Promise<Author[]> {
   return handleRes(await fetch(`${API_BASE}authors`));
